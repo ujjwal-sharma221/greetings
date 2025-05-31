@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { CircleAlert, Mail } from "lucide-react";
 
 import Logo from "@/assets/logo.svg";
@@ -17,23 +16,42 @@ import { useAppForm } from "../components/forms/form-components";
 import { defaultSignInValues, signInSchema, SignInValues } from "../components/forms/schema";
 
 export function SignInView() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (value: SignInValues) => {
     setError(null);
     setIsLoading(true);
-
     authClient.signIn.email(
       {
+        callbackURL: "/",
         email: value.email,
         password: value.password,
       },
       {
         onSuccess: () => {
           setIsLoading(false);
-          router.push("/");
+        },
+        onError: (error) => {
+          setIsLoading(false);
+          setError(error.error.message);
+        },
+      }
+    );
+  };
+
+  const onSocialSubmit = (provider: "github" | "google") => {
+    setError(null);
+    setIsLoading(true);
+
+    authClient.signIn.social(
+      {
+        provider,
+        callbackURL: "/",
+      },
+      {
+        onSuccess: () => {
+          setIsLoading(false);
         },
         onError: (error) => {
           setIsLoading(false);
@@ -107,13 +125,23 @@ export function SignInView() {
                 </div>
               )}
 
-              <Button variant="outline" className="w-full rounded-xl" size="lg">
+              <Button
+                onClick={() => onSocialSubmit("google")}
+                variant="outline"
+                className="w-full rounded-xl"
+                size="lg"
+                type="button"
+                disabled={isLoading}
+              >
                 Continue with Google <Image src={GoogleLogo} alt="logo" height={14} width={14} />
               </Button>
               <Button
+                type="button"
                 variant="outline"
                 className="w-full rounded-xl bg-zinc-800 text-white"
                 size="lg"
+                onClick={() => onSocialSubmit("github")}
+                disabled={isLoading}
               >
                 Continue with Github <Image src={GithubLogo} alt="logo" height={14} width={14} />
               </Button>
