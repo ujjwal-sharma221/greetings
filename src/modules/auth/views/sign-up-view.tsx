@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { CircleAlert, CircleUser, Mail } from "lucide-react";
 
 import Logo from "@/assets/logo.svg";
@@ -16,6 +17,7 @@ import { useAppForm } from "../components/forms/form-components";
 import { defaultSignUpValues, signUpSchema, SingUpValues } from "../components/forms/schema";
 
 export function SignUpView() {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,11 +30,11 @@ export function SignUpView() {
         email: value.email,
         password: value.password,
         name: value.name,
-        callbackURL: "/",
       },
       {
         onSuccess: () => {
           setIsLoading(false);
+          router.push("/");
         },
         onError: (error) => {
           setIsLoading(false);
