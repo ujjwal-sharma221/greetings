@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
+import { HomeView } from "@/modules/home/view/home-view";
 
 export default async function HomePage() {
   const session = await auth.api.getSession({
@@ -13,7 +14,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <h1>Welcome {session.user.name}</h1>
+      <HomeView />
     </div>
   );
 }
