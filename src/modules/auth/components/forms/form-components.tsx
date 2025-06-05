@@ -1,10 +1,20 @@
 import { useState } from "react";
-import { LoaderCircleIcon, EyeIcon, EyeOffIcon, LucideIcon } from "lucide-react";
-import { createFormHookContexts, createFormHook, useStore } from "@tanstack/react-form";
+import {
+  LoaderCircleIcon,
+  EyeIcon,
+  EyeOffIcon,
+  LucideIcon,
+} from "lucide-react";
+import {
+  createFormHookContexts,
+  createFormHook,
+  useStore,
+} from "@tanstack/react-form";
 
 import { ErrorField } from "./field-errors";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
@@ -15,13 +25,20 @@ export const { useAppForm } = createFormHook({
   fieldComponents: {
     TextField,
     PasswordField,
+    TextAreaField,
   },
   formComponents: {
     SubmitButton,
   },
 });
 
-export function TextField({ label, Icon }: { label: string; Icon: LucideIcon }) {
+export function TextField({
+  label,
+  Icon,
+}: {
+  label: string;
+  Icon: LucideIcon;
+}) {
   const field = useFieldContext<string>();
 
   return (
@@ -88,6 +105,25 @@ export function PasswordField({ label }: { label: string }) {
   );
 }
 
+export function TextAreaField({ label }: { label: string }) {
+  const field = useFieldContext<string>();
+
+  return (
+    <div className="*:not-first:mt-2">
+      <label htmlFor={field.name}>{label}</label>
+      <Textarea
+        placeholder="This field will grow with accordance to the input"
+        id={field.name}
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={field.handleBlur}
+        className="field-sizing-content max-h-29.5 min-h-0 resize-none py-1.75"
+      />
+      <ErrorField meta={field.state.meta} />
+    </div>
+  );
+}
+
 export function SubmitButton({
   children,
   isPending,
@@ -110,7 +146,11 @@ export function SubmitButton({
     >
       {isSubmitting || isPending ? (
         <div className="absolute inset-0 flex items-center justify-center">
-          <LoaderCircleIcon className="animate-spin" size={16} aria-hidden="true" />
+          <LoaderCircleIcon
+            className="animate-spin"
+            size={16}
+            aria-hidden="true"
+          />
         </div>
       ) : (
         children

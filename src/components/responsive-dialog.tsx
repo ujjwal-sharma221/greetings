@@ -72,8 +72,9 @@ export function ResponsiveDialog({
       onOpenChange={onOpenChange}
       variants={customVariants}
       transition={customTransition}
+      className="p-4"
     >
-      <DialogContent>
+      <DialogContent className="p-4">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

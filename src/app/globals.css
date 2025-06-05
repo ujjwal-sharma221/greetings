@@ -53,6 +53,19 @@
   --shadow-xl:
     1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 8px 10px 0px hsl(0 0% 0% / 0.06);
   --shadow-2xl: 1px 2px 5px 1px hsl(0 0% 0% / 0.15);
+  --main: oklch(0.97 0 0);
+  --main-secondary: oklch(97% 0 0);
+  --main-foreground: oklch(0.925 0 0);
+  --main-muted: oklch(0.96 0 0);
+  --main-background: oklch(0.97 0 0);
+  --main-invert: oklch(0.205 0 0);
+
+  --primary: oklch(0 0 0);
+  --primary-foreground: oklch(37.1% 0 0);
+  --primary-muted: oklch(0.556 0 0);
+  --primary-invert: oklch(1 0 0);
+
+  --border: oklch(0.885 0 0);
 }
 
 .dark {
@@ -163,12 +176,47 @@
 
   --animate-spinner: spinner 1.2s linear infinite;
 
+  --color-main: var(--main);
+  --color-main-secondary: var(--main-secondary);
+  --color-main-foreground: var(--main-foreground);
+  --color-main-muted: var(--main-muted);
+  --color-main-background: var(--main-background);
+  --color-main-invert: var(--main-invert);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-muted: var(--primary-muted);
+  --color-primary-invert: var(--primary-invert);
+
+  --color-border: var(--border);
+
+  --animate-shine: shine 6s linear infinite;
+  --animate-brightness: brightness 2.2s linear infinite;
+
   @keyframes spinner {
     0% {
       opacity: 1;
     }
     100% {
       opacity: 0.15;
+    }
+  }
+
+  @keyframes shine {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: -400% 0;
+    }
+  }
+
+  @keyframes brightness {
+    0% {
+      transform: skew(-13deg) translateX(-100%);
+    }
+    100% {
+      transform: skew(-13deg) translateX(100%);
     }
   }
 }

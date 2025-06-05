@@ -1,38 +1,52 @@
 import { Suspense } from "react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { ErrorBoundary } from "react-error-boundary";
 
+import { auth } from "@/lib/auth";
 import { getQueryClient, trpc } from "@/trpc/server";
+import { ErrorState } from "@/components/error-state";
 import { LoadingState } from "@/components/loading-state";
 import { AgentsView } from "@/modules/agents/views/agent-views";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { ErrorState } from "@/components/error-state";
+import { ListHeader } from "@/modules/agents/components/list-header";
 
 const AgentsPage = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    redirect("/sign-in");
+  }
+
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(trpc.agents.getMany.queryOptions());
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense
-        fallback={
-          <LoadingState
-            title="Loading agents"
-            description="This may take a while"
-          />
-        }
-      >
-        <ErrorBoundary
+    <>
+      <ListHeader />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense
           fallback={
-            <ErrorState
-              title="Something went wrong while fetching agents"
-              description="Please try again"
+            <LoadingState
+              title="Loading agents"
+              description="This may take a while"
             />
           }
         >
-          <AgentsView />
-        </ErrorBoundary>
-      </Suspense>
-    </HydrationBoundary>
+          <ErrorBoundary
+            fallback={
+              <ErrorState
+                title="Something went wrong while fetching agents"
+                description="Please try again "
+              />
+            }
+          >
+            <AgentsView />
+          </ErrorBoundary>
+        </Suspense>
+      </HydrationBoundary>
+    </>
   );
 };
 export default AgentsPage;
