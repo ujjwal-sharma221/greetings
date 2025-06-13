@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { GlowEffect } from "./ui/glow-effect";
 
 interface ErrorState {
@@ -7,20 +8,21 @@ interface ErrorState {
 
 export function ErrorState({ title, description }: ErrorState) {
   return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <div className="relative flex h-64 w-96 items-center justify-center">
-        <GlowEffect
-          colors={["#FF0000", "#FF4444", "#FF6B6B", "#FF9999"]}
-          mode="static"
-          blur="medium"
-        />
-        <div className="bg-background relative h-64 w-96 rounded-lg p-2 text-black dark:bg-white dark:text-black">
-          <div className="flex flex-col gap-y-6 text-center">
-            <h6 className="text-lg font-medium">{title}</h6>
-            <p className="text-sm">{description}</p>
-          </div>
-        </div>
-      </div>
+    <div className="relative flex h-[50rem] w-full items-center justify-center bg-white dark:bg-black">
+      <div
+        className={cn(
+          "absolute inset-0",
+          "[background-size:40px_40px]",
+          "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
+          "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
+        )}
+      />
+
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>
+      <p className="relative z-20 bg-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text py-8 text-4xl font-bold text-transparent sm:text-7xl">
+        <h6 className="text-destructive text-4xl font-medium">{title}</h6>
+        <p className="text-xl">{description}</p>
+      </p>
     </div>
   );
 }
