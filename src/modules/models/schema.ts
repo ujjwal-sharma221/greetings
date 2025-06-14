@@ -5,4 +5,8 @@ export const agentsInsertSchema = z.object({
   instructions: z.string().min(1, { error: "Instructions can not be empty" }),
 });
 
+export const agentsUpdateSchema = agentsInsertSchema.extend({
+  id: z.string().min(1, { error: "id is required" }),
+});
+
 export type AgentInsertSchemaValues = z.infer<typeof agentsInsertSchema>;
