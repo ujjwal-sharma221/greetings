@@ -81,3 +81,28 @@ export const agents = sqliteTable("agents", {
     () => /* @__PURE__ */ new Date(),
   ),
 });
+
+export const meetings = sqliteTable("meetings", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+  name: text("name").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  agentId: text("agent_id")
+    .notNull()
+    .references(() => agents.id, { onDelete: "cascade" }),
+  status: text("status").notNull().default("upcoming"),
+  transcriptUrl: text("transcript_url"),
+  recordingUrl: text("recording_url"),
+  summary: text("summary"),
+  startedAt: integer("started_at", { mode: "timestamp" }),
+  endedAt: integer("ended_at", { mode: "timestamp" }),
+  createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(
+    () => /* @__PURE__ */ new Date(),
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(
+    () => /* @__PURE__ */ new Date(),
+  ),
+});
