@@ -9,4 +9,14 @@ export const agentsUpdateSchema = agentsInsertSchema.extend({
   id: z.string().min(1, { error: "id is required" }),
 });
 
+export const meetingsInsertSchema = z.object({
+  name: z.string().min(1, { error: "Name of meeting is required" }),
+  agentId: z.string().min(1, { error: "Meeting Id is required" }),
+});
+
+export const meetingsUpdateSchema = meetingsInsertSchema.extend({
+  id: z.string().min(1, { error: "id is required" }),
+});
+
 export type AgentInsertSchemaValues = z.infer<typeof agentsInsertSchema>;
+export type MeetingsInsertSchemaValues = z.infer<typeof meetingsInsertSchema>;
