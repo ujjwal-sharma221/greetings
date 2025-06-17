@@ -1,16 +1,18 @@
 "use client";
 
-import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { useTRPC } from "@/trpc/client";
+import { columns } from "../components/columns";
+import { DataTable } from "@/components/data-table";
 
 export function MeetingsView() {
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(trpc.meetings.getMany.queryOptions({}));
 
   return (
-    <div>
-      Meetings view
-      {JSON.stringify(data, null, 2)}
+    <div className="flex flex-1 flex-col gap-y-4 px-4 pb-4 md:px-9">
+      <DataTable data={data.items} columns={columns} />
     </div>
   );
 }
